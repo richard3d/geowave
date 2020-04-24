@@ -206,6 +206,19 @@ K_SELECT : S E L E C T;
 K_WHERE : W H E R E;
 
 IDENTIFIER
+	: RAW_IDENTIFIER
+	{
+      String txt = getText();
+      char firstChar = txt.charAt(0);
+      // strip the leading and trailing characters that wrap the identifier when using unconventional naming
+      if(txt.length() > 1 && (firstChar == '"' || firstChar == '`' || firstChar == '[')) {
+      	txt = txt.substring(1, txt.length() - 1); 
+      }
+      setText(txt);
+    }
+;
+
+RAW_IDENTIFIER
 	: '"' (~'"' | '""')* '"'
 	| '`' (~'`' | '``')* '`'
  	| '[' ~']'* ']'
